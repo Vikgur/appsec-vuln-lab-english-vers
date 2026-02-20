@@ -1,0 +1,27 @@
+rules:
+  - id: python-sql-injection-raw-query
+    languages: [python]
+    severity: ERROR
+    message: >
+      Possible SQL Injection: user-controlled input is used in a raw SQL query.
+      Use parameterized queries instead of string formatting or concatenation.
+    metadata:
+      cwe: "CWE-89"
+      owasp: "A03:2021-Injection"
+      category: security
+      technology: python
+    patterns:
+      - pattern-either:
+          - pattern: cursor.execute(f"...{...}...")
+          - pattern: cursor.execute("..." + ...)
+          - pattern: cursor.execute("...%s..." % ...)
+          - pattern: cursor.execute("...{}".format(...))
+          - pattern: cursor.execute($QUERY)
+      - pattern-not: cursor.execute("...", ...)
+      - metavariable-pattern:
+          metavariable: $QUERY
+          pattern-either:
+            - pattern: f"...{...}..."
+            - pattern: "..."+...
+            - pattern: "...%s..." % ...
+            - pattern: "...{}".format(...)

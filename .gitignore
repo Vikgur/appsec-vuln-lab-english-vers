@@ -1,0 +1,55 @@
+# System
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.venv/
+env/
+venv/
+
+# Node / JS / TS
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+target/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.csproj.user
+
+# C / C++
+*.o
+*.so
+*.a
+*.out
+*.exe
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs / temp
+*.log
+*.tmp
+
+# Project bootstrap
+project_bootrstrap.sh

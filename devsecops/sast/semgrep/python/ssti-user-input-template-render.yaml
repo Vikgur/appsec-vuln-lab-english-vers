@@ -1,0 +1,26 @@
+rules:
+  - id: python-ssti-render-template-string
+    languages: [python]
+    message: >
+      Possible SSTI. User-controlled data used in render_template_string.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-94"
+      owasp: "A03:2021-Injection"
+    patterns:
+      - pattern-either:
+          - pattern: render_template_string($TEMPLATE)
+          - pattern: Template($TEMPLATE).render(...)
+      - metavariable-pattern:
+          metavariable: $TEMPLATE
+          pattern-either:
+            - pattern: f"...{$VAR}..."
+            - pattern: "..."+$VAR
+            - pattern: $VAR + "..."
+      - metavariable-pattern:
+          metavariable: $VAR
+          pattern-either:
+            - pattern: request.args.get(...)
+            - pattern: request.form.get(...)
+            - pattern: request.get_json()

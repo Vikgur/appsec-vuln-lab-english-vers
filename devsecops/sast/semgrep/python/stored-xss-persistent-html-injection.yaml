@@ -1,0 +1,21 @@
+rules:
+  - id: python-stored-xss-html-concat
+    languages: [python]
+    message: >
+      Possible Stored XSS. Data from database embedded into HTML without escaping.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-79"
+      owasp: "A03:2021-Injection"
+    patterns:
+      - pattern-either:
+          - pattern: $HTML += f"...{$VAR}..."
+          - pattern: return f"...{$VAR}..."
+          - pattern: $HTML = $HTML + $VAR
+      - metavariable-pattern:
+          metavariable: $VAR
+          pattern-either:
+            - pattern: $COL.find(...)
+            - pattern: $OBJ["text"]
+            - pattern: $OBJ.text

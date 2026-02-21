@@ -1,0 +1,22 @@
+rules:
+  - id: python-unsafe-yaml-load
+    languages: [python]
+    message: >
+      Unsafe YAML deserialization using yaml.load with unsafe Loader.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-502"
+      owasp: "A08:2021-Software and Data Integrity Failures"
+    patterns:
+      - pattern: yaml.load($DATA, Loader=yaml.Loader)
+      - pattern-either:
+          - pattern: yaml.load($DATA)
+          - pattern: yaml.load($DATA, Loader=yaml.FullLoader)
+      - metavariable-pattern:
+          metavariable: $DATA
+          pattern-either:
+            - pattern: request.get_data(...)
+            - pattern: request.data
+            - pattern: request.get_json()
+            - pattern: $VAR

@@ -1,0 +1,21 @@
+rules:
+  - id: python-unsafe-deserialization-pickle
+    languages: [python]
+    message: >
+      Unsafe deserialization using pickle with potentially user-controlled input.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-502"
+      owasp: "A08:2021-Software and Data Integrity Failures"
+    patterns:
+      - pattern-either:
+          - pattern: pickle.loads($DATA)
+          - pattern: pickle.load($DATA)
+      - metavariable-pattern:
+          metavariable: $DATA
+          pattern-either:
+            - pattern: request.data
+            - pattern: request.get_json()
+            - pattern: base64.b64decode(...)
+            - pattern: $VAR

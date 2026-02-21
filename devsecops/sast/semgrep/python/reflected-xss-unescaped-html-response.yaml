@@ -1,0 +1,20 @@
+rules:
+  - id: python-reflected-xss-html-concat
+    languages: [python]
+    message: >
+      Possible Reflected XSS. User input directly embedded into HTML response.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-79"
+      owasp: "A03:2021-Injection"
+    patterns:
+      - pattern-either:
+          - pattern: return f"...{$VAR}..."
+          - pattern: return "..."+$VAR
+      - metavariable-pattern:
+          metavariable: $VAR
+          pattern-either:
+            - pattern: request.args.get(...)
+            - pattern: request.form.get(...)
+            - pattern: request.get_json()

@@ -1,0 +1,22 @@
+rules:
+  - id: python-path-traversal-join-user-input
+    languages: [python]
+    message: >
+      Possible Path Traversal. User-controlled input used in filesystem path construction.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-22"
+      owasp: "A01:2021-Broken Access Control"
+    patterns:
+      - pattern-either:
+          - pattern: os.path.join($BASE, $VAR)
+          - pattern: open($VAR, ...)
+          - pattern: send_file($VAR)
+      - metavariable-pattern:
+          metavariable: $VAR
+          pattern-either:
+            - pattern: request.args.get(...)
+            - pattern: request.form.get(...)
+            - pattern: request.get_json()
+            - pattern: request.json

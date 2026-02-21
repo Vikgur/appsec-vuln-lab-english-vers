@@ -1,0 +1,18 @@
+rules:
+  - id: python-csrf-state-changing-post
+    languages: [python]
+    message: >
+      Possible CSRF. State-changing POST endpoint without CSRF validation.
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-352"
+      owasp: "A01:2021-Broken Access Control"
+    patterns:
+      - pattern: |
+          @app.route($ROUTE, methods=["POST"])
+          def $FUNC(...):
+              ...
+      - pattern-not: request.form.get("csrf_token")
+      - pattern-not: flask_wtf
+      - pattern-not: csrf_protect

@@ -1,0 +1,23 @@
+rules:
+  - id: python-nosql-injection-mongodb
+    languages: [python]
+    message: >
+      Possible NoSQL Injection. User-controlled JSON flows into MongoDB query.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-943"
+      owasp: "A03:2021-Injection"
+    patterns:
+      - pattern-either:
+          - pattern: $COL.find_one($DATA)
+          - pattern: $COL.find($DATA)
+          - pattern: $COL.update_one($DATA, ...)
+          - pattern: $COL.delete_one($DATA)
+      - metavariable-pattern:
+          metavariable: $DATA
+          pattern-either:
+            - pattern: request.get_json()
+            - pattern: request.json
+            - pattern: $REQ.get_json()
+            - pattern: $REQ.json

@@ -1,0 +1,22 @@
+rules:
+  - id: python-command-injection-shell
+    languages: [python]
+    message: >
+      Possible OS Command Injection. User-controlled data flows into shell execution.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-78"
+      owasp: "A03:2021-Injection"
+    patterns:
+      - pattern-either:
+          - pattern: os.system($CMD)
+          - pattern: os.popen($CMD)
+          - pattern: subprocess.run($CMD, shell=True, ...)
+          - pattern: subprocess.Popen($CMD, shell=True, ...)
+          - pattern: subprocess.call($CMD, shell=True, ...)
+      - pattern-inside: |
+          $CMD = ... + $VAR
+      - metavariable-pattern:
+          metavariable: $VAR
+          pattern: request.$ANY(...)

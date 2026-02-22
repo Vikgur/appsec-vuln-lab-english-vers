@@ -1,0 +1,24 @@
+rules:
+  - id: python-idor-horizontal-privilege-escalation
+    languages: [python]
+    message: >
+      Possible IDOR. Object retrieved by user-controlled ID
+      without authorization check.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-639"
+      owasp: "A01:2021-Broken Access Control"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              @app.route(.../<$ID>)
+              ...
+              $OBJ = $STORE.get($ID)
+          - pattern: |
+              $ID = request.args.get(...)
+              ...
+              $OBJ = $STORE.get($ID)
+      - pattern-not: |
+          if $ID == $CURRENT_USER:
+              ...

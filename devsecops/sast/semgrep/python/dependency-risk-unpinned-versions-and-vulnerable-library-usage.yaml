@@ -1,0 +1,15 @@
+rules:
+  - id: python-dependency-risk-unpinned-or-unsafe-usage
+    languages: [python]
+    message: >
+      Possible dependency risk: unpinned version or unsafe library usage.
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-1104"
+      owasp: "A06:2021-Vulnerable and Outdated Components"
+    patterns:
+      - pattern-either:
+          - pattern: yaml.load(...)
+          - pattern: requests.get(...)
+      - pattern-not: yaml.safe_load(...)

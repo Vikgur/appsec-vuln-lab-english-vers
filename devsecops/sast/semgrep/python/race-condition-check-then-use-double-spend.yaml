@@ -1,0 +1,46 @@
+rules:
+  - id: python-race-condition-check-then-act
+    languages: [python]
+    severity: WARNING
+    message: >
+      Possible TOCTOU race condition. Check-then-act pattern without proper synchronization.
+      Operations that read a variable/state and then modify it without a lock or atomic SQL update
+      can lead to double-spend or race conditions in multithreaded/multiprocess environments.
+    metadata:
+      cwe: "CWE-367"
+      owasp: "A01:2021-Broken Access Control"
+      category: security
+      technology: python
+    patterns:
+      - pattern-either:
+          # Прямое изменение переменной после проверки
+          - pattern: |
+              if $COND:
+                  ...
+                  $VAR -= $AMOUNT
+          - pattern: |
+              if $COND:
+                  ...
+                  $VAR = $VAR - $AMOUNT
+          # Вызов метода, который модифицирует состояние после проверки
+          - pattern: |
+              if $COND:
+                  ...
+                  $VAR.$METHOD($ARGS)
+          # Искусственная задержка после проверки увеличивает риск
+          - pattern: |
+              if $COND:
+                  ...
+                  time.sleep($TIME)
+      - pattern-not-either:
+          # Любая форма блокировки вокруг check-then-act
+          - pattern: |
+              with $LOCK:
+                  ...
+          - pattern: |
+              @synchronized
+                  ...
+    metavariable-pattern:
+      metavariable: $VAR
+      pattern-either:
+        - pattern: $VAR

@@ -1,0 +1,38 @@
+rules:
+  - id: python-race-condition-check-then-update
+    languages: [python]
+    severity: WARNING
+    message: >
+      Possible race condition (TOCTOU). 
+      Detects separate SELECT check followed by UPDATE without atomic operation.
+      This pattern can lead to double-spend or inconsistent state in multithreaded/multi-instance apps.
+    metadata:
+      cwe: "CWE-367"
+      owasp: "A04:2021-Insecure Design"
+      category: security
+      technology: python
+    patterns:
+      - pattern-either:
+          # SELECT → if → UPDATE pattern
+          - pattern: |
+              $CUR.execute("SELECT ...", $ARGS1)
+              ...
+              if $COND:
+                  ...
+                  $CUR.execute("UPDATE ...", $ARGS2)
+          # SELECT → check balance → UPDATE pattern
+          - pattern: |
+              $CUR.execute("SELECT $COLS FROM $TABLE WHERE $WHERE", $ARGS1)
+              ...
+              if $CHECK:
+                  ...
+                  $CUR.execute("UPDATE $TABLE SET ... WHERE ...", $ARGS2)
+      - pattern-not-either:
+          # Исключаем атомарные обновления
+          - pattern: |
+              $CUR.execute("UPDATE ... SET ... WHERE ... AND ...", ...)
+    metavariable-pattern:
+      metavariable: $CUR
+      pattern-either:
+        - pattern: cursor
+        - pattern: $DB.cursor()

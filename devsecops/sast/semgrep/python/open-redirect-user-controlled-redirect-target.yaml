@@ -1,0 +1,16 @@
+rules:
+  - id: python-open-redirect-user-controlled-target
+    languages: [python]
+    message: >
+      Possible Open Redirect. User-controlled input passed to redirect().
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-601"
+      owasp: "A01:2021-Broken Access Control"
+    patterns:
+      - pattern: redirect($TARGET)
+      - pattern-inside: |
+          $TARGET = request.$ANY.get(...)
+      - pattern-not: is_safe_url(...)
+      - pattern-not: url_for(...)

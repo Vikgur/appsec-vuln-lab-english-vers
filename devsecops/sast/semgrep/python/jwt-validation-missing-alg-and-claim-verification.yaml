@@ -1,0 +1,19 @@
+rules:
+  - id: python-jwt-validation-flaws
+    languages: [python]
+    message: >
+      Possible JWT validation flaw. Missing algorithm restriction
+      or missing claim validation (exp, iss, aud).
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-347"
+      owasp: "A07:2021-Identification and Authentication Failures"
+    patterns:
+      - pattern-either:
+          - pattern: jwt.decode($TOKEN, $KEY)
+          - pattern: jwt.decode($TOKEN, $KEY, ...)
+      - pattern-not: algorithms=[...]
+      - pattern-not: issuer=...
+      - pattern-not: audience=...
+      - pattern-not: require=[...]

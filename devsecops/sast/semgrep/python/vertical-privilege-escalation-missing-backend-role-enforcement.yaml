@@ -1,0 +1,24 @@
+rules:
+  - id: python-vertical-privilege-escalation-missing-role-check
+    languages: [python]
+    message: >
+      Possible vertical privilege escalation.
+      Privileged endpoint without backend role enforcement.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-285"
+      owasp: "A01:2021-Broken Access Control"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              @app.route("/admin/..." , ...)
+              def $FUNC(...):
+                  ...
+          - pattern: |
+              def $FUNC(...):
+                  ...
+                  del $VAR[$ID]
+      - pattern-not: current_user.get("role")
+      - pattern-not: require_role
+      - pattern-not: has_permission

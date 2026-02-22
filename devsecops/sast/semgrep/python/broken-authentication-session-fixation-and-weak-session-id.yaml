@@ -1,0 +1,17 @@
+rules:
+  - id: python-broken-auth-session-fixation
+    languages: [python]
+    message: >
+      Possible Broken Authentication. Session ID taken from client or weakly generated.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-384"
+      owasp: "A07:2021-Identification and Authentication Failures"
+    patterns:
+      - pattern-either:
+          - pattern: request.cookies.get("session_id")
+          - pattern: hashlib.md5(...)
+          - pattern: hashlib.sha1(...)
+      - pattern-not: secrets.token_urlsafe(...)
+      - pattern-not: flask.session

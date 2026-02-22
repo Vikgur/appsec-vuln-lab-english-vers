@@ -15,8 +15,8 @@ create_dir() {
 
 # python
 
-create_dir languages/python/web/flask/{sql-injection-unparameterized-query,command-injection-shell-execution,nosql-injection-operator-injection,ssti-user-input-template-render,path-traversal-directory-escape,insecure-file-upload-unrestricted-upload,unsafe-deserialization-pickle-rce,unsafe-yaml-load-object-deserialization,reflected-xss-unescaped-html-response,stored-xss-persistent-html-injection,csrf-state-changing-post-without-token}
-touch $(echo languages/python/web/flask/{sql-injection-unparameterized-query,command-injection-shell-execution,nosql-injection-operator-injection,ssti-user-input-template-render,path-traversal-directory-escape,insecure-file-upload-unrestricted-upload,unsafe-deserialization-pickle-rce,unsafe-yaml-load-object-deserialization,reflected-xss-unescaped-html-response,stored-xss-persistent-html-injection,csrf-state-changing-post-without-token}/{vuln_app.py,fixed_app.py,exploit_payload.txt,README.md})
+create_dir languages/python/web/flask/{sql-injection-unparameterized-query,command-injection-shell-execution,nosql-injection-operator-injection,ssti-user-input-template-render,path-traversal-directory-escape,insecure-file-upload-unrestricted-upload,unsafe-deserialization-pickle-rce,unsafe-yaml-load-object-deserialization,reflected-xss-unescaped-html-response,stored-xss-persistent-html-injection,csrf-state-changing-post-without-token,broken-authentication-session-fixation-and-weak-session-id}
+touch $(echo languages/python/web/flask/{sql-injection-unparameterized-query,command-injection-shell-execution,nosql-injection-operator-injection,ssti-user-input-template-render,path-traversal-directory-escape,insecure-file-upload-unrestricted-upload,unsafe-deserialization-pickle-rce,unsafe-yaml-load-object-deserialization,reflected-xss-unescaped-html-response,stored-xss-persistent-html-injection,csrf-state-changing-post-without-token,broken-authentication-session-fixation-and-weak-session-id}/{vuln_app.py,fixed_app.py,exploit_payload.txt,README.md})
 
 create_dir languages/python/web/fastapi
 create_dir languages/python/web/django
@@ -92,7 +92,7 @@ create_dir infrastructure/iac-and-config/cloudformation
 # devsecops
 
 create_dir devsecops/sast/semgrep/python
-touch devsecops/sast/semgrep/python/{sql-injection-unparameterized-query.yaml,command-injection-shell-execution.yaml,nosql-injection-operator-injection.yaml,ssti-user-input-template-render.yaml,path-traversal-directory-escape.yaml,insecure-file-upload-unrestricted-upload.yaml,unsafe-deserialization-pickle-rce.yaml,unsafe-yaml-load-object-deserialization.yaml,reflected-xss-unescaped-html-response.yaml,stored-xss-persistent-html-injection.yaml,csrf-state-changing-post-without-token.yaml}
+touch devsecops/sast/semgrep/python/{sql-injection-unparameterized-query.yaml,command-injection-shell-execution.yaml,nosql-injection-operator-injection.yaml,ssti-user-input-template-render.yaml,path-traversal-directory-escape.yaml,insecure-file-upload-unrestricted-upload.yaml,unsafe-deserialization-pickle-rce.yaml,unsafe-yaml-load-object-deserialization.yaml,reflected-xss-unescaped-html-response.yaml,stored-xss-persistent-html-injection.yaml,csrf-state-changing-post-without-token.yaml,broken-authentication-session-fixation-and-weak-session-id.yaml}
 create_dir devsecops/sast/semgrep/java
 create_dir devsecops/sast/semgrep/dotnet
 create_dir devsecops/sast/semgrep/go

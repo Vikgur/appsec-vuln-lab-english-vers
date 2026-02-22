@@ -1,0 +1,20 @@
+rules:
+  - id: python-ssrf-user-controlled-url
+    languages: [python]
+    message: >
+      Possible SSRF. User-controlled URL passed to HTTP client.
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-918"
+      owasp: "A10:2021-SSRF"
+    patterns:
+      - pattern-either:
+          - pattern: requests.get($URL, ...)
+          - pattern: requests.post($URL, ...)
+          - pattern: httpx.get($URL, ...)
+          - pattern: urllib.request.urlopen($URL)
+      - pattern-inside: |
+          $URL = request.$ANY.get(...)
+      - pattern-not: ALLOWED_HOSTS
+      - pattern-not: is_private_ip

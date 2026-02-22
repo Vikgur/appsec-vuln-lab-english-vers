@@ -1,0 +1,18 @@
+rules:
+  - id: python-resource-exhaustion-upload-or-redos
+    languages: [python]
+    message: >
+      Possible resource exhaustion: unbounded file read
+      or catastrophic regex pattern.
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-400"
+      owasp: "A05:2021-Security Misconfiguration"
+    patterns:
+      - pattern-either:
+          - pattern: $FILE.read()
+          - pattern: re.compile("(.*)+")
+          - pattern: re.compile("(.+)+")
+          - pattern: re.compile("(a+)+")
+      - pattern-not: MAX_CONTENT_LENGTH

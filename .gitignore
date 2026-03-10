@@ -14,3 +14,5 @@ Temporary / swap files
 *.swo
 *.tmp
 *.log
+
+project_bootrstrap.sh

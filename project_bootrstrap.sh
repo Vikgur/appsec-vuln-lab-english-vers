@@ -108,6 +108,7 @@ create_dir devsecops/iac-scanning
 create_dir devsecops/ci-cd-pipelines
 
 touch README.md
+touch VULNERABILITIES.md
 touch .gitignore
 
 echo "Structure created in current repository."
